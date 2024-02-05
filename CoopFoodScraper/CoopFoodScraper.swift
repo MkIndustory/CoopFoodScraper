@@ -100,7 +100,8 @@ struct CoopFoodScraper {
             //URLの最後の文字列を取得して一意なjsonを作る
             let lastCharacter = url.last!
             print("😤",lastCharacter)
-            let fileURL = dirURL.appendingPathComponent("ChuoFoodData\(lastCharacter).json")
+            let fileURL = dirURL.appendingPathComponent("CoopFoodScraper/ChuoFoodData\(lastCharacter).json")
+            print(fileURL)
             
             do {
                 try jsonData.write(to: fileURL)
