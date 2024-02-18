@@ -11,6 +11,8 @@ import SwiftSoup
 
 @main
 struct CoopFoodScraper {
+    //TODO: サイズのバラエティも含めてjson化する
+    
     // システムメンテナンス中は以下から取れる。
     // https://west2-univ.jp/sp/index.php?t=650111
     /*
