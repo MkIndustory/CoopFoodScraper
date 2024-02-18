@@ -11,6 +11,8 @@ import SwiftSoup
 
 @main
 struct CoopFoodScraper {
+    // システムメンテナンス中は以下から取れる。
+    // https://west2-univ.jp/sp/index.php?t=650111
     /*
      京都大学中央食堂の場合
      　主菜：on_a
@@ -29,6 +31,7 @@ struct CoopFoodScraper {
         var price: String //ごはんの値段
         var img: String //imgのURL
     }
+    static let homeUrlString = "https://west2-univ.jp/sp/index.php?t=650111"
     static var urlsArray = [
         "https://west2-univ.jp/sp/menu_load.php?t=650111&a=on_a",
         "https://west2-univ.jp/sp/menu_load.php?t=650111&a=on_b",
@@ -37,9 +40,27 @@ struct CoopFoodScraper {
         "https://west2-univ.jp/sp/menu_load.php?t=650111&a=on_e",
         "https://west2-univ.jp/sp/menu_load.php?t=650111&a=on_bunrui2"
     ]
-    //static let url = URL(string: "https://west2-univ.jp/sp/menu_load.php?t=650111&a=on_c")!
 
+    static func getHomeState() async throws -> Bool? {
+        let response = await AF.request(homeUrlString, method: .get, headers: nil).serializingString().response
+        guard let html = response.value, let doc = try? SwiftSoup.parse(html) else {
+            print("HTMLパース失敗")
+            return nil}
+        
+        //liタグの一番最初を取得
+        let li = try? doc.select("li").array().first
+        guard let text = try? li?.text() else {
+            print("liからtextとるの失敗")
+            return nil}
+        print("📃",text) //システムメンテナンス中の場合、"現在、システムメンテナンス中です #1" となるはず
+        return text.contains("システムメンテナンス中")
+    }
+        
     static func main() async throws {
+        let isMaintenanceMode = try await getHomeState() ?? true
+        // システムメンテナンス中やなにかがおかしい場合、 isMaintenanceMode == true
+        // その場合は新しいjsonを作らない。
+        guard !isMaintenanceMode else {return}
         for url in urlsArray {
             
             var foodNameArray : [String] = []
