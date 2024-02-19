@@ -91,7 +91,9 @@ struct CoopFoodScraper {
                     print("😍",priceAndSizeArray)
                     
                     for j in 0..<priceAndSizeArray.count {
-                        priceArray.append(priceAndSizeArray[j])
+                        //"円"の文字を消す
+                        let price = priceAndSizeArray[j].replacingOccurrences(of:"円", with:"")
+                        priceArray.append(price)
                     }
                     print(priceArray)
                     
