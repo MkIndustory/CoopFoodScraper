@@ -11,11 +11,6 @@ import SwiftSoup
 
 @main
 struct CoopFoodScraper {
-    //TODO: サイズのバラエティも含めてjson化する
-    // サーモンビビンバ丼のサイズバラエティ　https://west2-univ.jp/sp/detail.php?t=650111&c=819232
-    //今の所、サイズ選べるのは丼カレーのカテゴリの商品のみ。
-    
-    
     // システムメンテナンス中は以下から取れる。
     // https://west2-univ.jp/sp/index.php?t=650111
     /*
@@ -27,15 +22,6 @@ struct CoopFoodScraper {
      　デザート：on_e
      　夜限定メニュー：on_bunrui2
      */
-    
-    // ただし、サイズがあるメニューに関してはhttps://west2-univ.jp/sp/detail.php?t=650111&c=814702
-    // のように、そのメニューの詳細に行かないとサイズによる値段の変化はみれない。
-    
-    struct Food: Codable {
-        var name: String //ごはんの名前
-        var price: String //ごはんの値段
-        var img: String //imgのURL
-    }
     static let homeUrlString = "https://west2-univ.jp/sp/index.php?t=650111"
     static var urlsArray = [
         "https://west2-univ.jp/sp/menu_load.php?t=650111&a=on_a",
@@ -47,7 +33,9 @@ struct CoopFoodScraper {
     ]
 
     static func getHomeState() async throws -> Bool? {
-        let response = await AF.request(homeUrlString, method: .get, headers: nil).serializingString().response
+        let response = await AF.request(homeUrlString, 
+                                        method: .get,
+                                        headers: nil).serializingString().response
         guard let html = response.value, let doc = try? SwiftSoup.parse(html) else {
             print("HTMLパース失敗")
             return nil}
@@ -75,7 +63,6 @@ struct CoopFoodScraper {
             let response = await AF.request(url, method: .get, headers: nil).serializingString().response
             guard let html = response.value, let doc = try? SwiftSoup.parse(html) else {return }
                     
-            
             //画像を取得
             let srcs: Elements = try doc.select("img[src]")
             var srcsStringArray: [String] = srcs.array().map { try! $0.attr("src").description }
@@ -102,7 +89,6 @@ struct CoopFoodScraper {
                     let priceString = try span?[1].text() // Optional("中115円 ﾐﾆ73円 小94円 大136円")
                     let priceAndSizeArray:[String] = priceString?.components(separatedBy: " ") ?? []
                     print("😍",priceAndSizeArray)
-//                    priceArray = priceAndSizeArray
                     
                     for j in 0..<priceAndSizeArray.count {
                         priceArray.append(priceAndSizeArray[j])
@@ -130,7 +116,7 @@ struct CoopFoodScraper {
                     print("⭕️",foodImageURL)
                     // 料金バラエティの数だけsrcsStringArrayにそのご飯の画像URLを入れる。
                     for j in 0..<priceAndSizeArray.count {
-                        srcsStringArray.append(foodImageURL ?? "")
+                        srcsStringArray.append(foodImageURL )
                     }
                     
                 }
@@ -162,16 +148,6 @@ struct CoopFoodScraper {
                     }
                 }
             }
-            
-            
-            
-            
-       
-
-            
-            
-
-
             
             print("☀️",foodNameArray.count, priceArray.count, srcsStringArray.count)
             // ここからjsonを作る。

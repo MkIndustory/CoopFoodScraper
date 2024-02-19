@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		646962C72B83108A00AA39B1 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 646962C62B83108A00AA39B1 /* Food.swift */; };
 		64CD0EF22B6FC6270055DCA1 /* CoopFoodScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64CD0EF12B6FC6270055DCA1 /* CoopFoodScraper.swift */; };
 		64CD0EFA2B6FC6530055DCA1 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 64CD0EF92B6FC6530055DCA1 /* Alamofire */; };
 		64CD0EFD2B6FC65B0055DCA1 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 64CD0EFC2B6FC65B0055DCA1 /* SwiftSoup */; };
@@ -25,6 +26,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		646962C62B83108A00AA39B1 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		64CD0EEE2B6FC6270055DCA1 /* CoopFoodScraper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CoopFoodScraper; sourceTree = BUILT_PRODUCTS_DIR; };
 		64CD0EF12B6FC6270055DCA1 /* CoopFoodScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoopFoodScraper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -62,6 +64,7 @@
 			isa = PBXGroup;
 			children = (
 				64CD0EF12B6FC6270055DCA1 /* CoopFoodScraper.swift */,
+				646962C62B83108A00AA39B1 /* Food.swift */,
 			);
 			path = CoopFoodScraper;
 			sourceTree = "<group>";
@@ -133,6 +136,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				64CD0EF22B6FC6270055DCA1 /* CoopFoodScraper.swift in Sources */,
+				646962C72B83108A00AA39B1 /* Food.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
