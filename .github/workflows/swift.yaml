@@ -16,8 +16,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: hoge
-      run: echo piki
+    - name: build
+      run: xcodebuild -scheme CoopFoodScraper -sdk macosx14.2 -configuration Debug build
     # - name: Build
     #   run: swift build -v
     # - name: Run tests
