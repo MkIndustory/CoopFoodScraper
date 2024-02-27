@@ -17,7 +17,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: build
-      run: xcodebuild -scheme CoopFoodScraper -sdk macosx14.0 -configuration Debug build
+      run: ARCHS="arm64" ONLY_ACTIVE_ARCH=NO xcodebuild -project CoopFoodScraper.xcodeproj -scheme CoopFoodScraper -sdk macosx14.0 -configuration Debug -derivedDataPath build
+    - name: run scraper
+      run: ./build/Build/Products/Debug/CoopFoodScraper
     # - name: Build
     #   run: swift build -v
     # - name: Run tests
