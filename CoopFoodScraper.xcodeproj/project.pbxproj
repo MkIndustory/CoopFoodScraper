@@ -27,6 +27,7 @@
 
 /* Begin PBXFileReference section */
 		646962C62B83108A00AA39B1 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
+		648C91682B8E31F4003EF4FE /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		64CD0EEE2B6FC6270055DCA1 /* CoopFoodScraper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CoopFoodScraper; sourceTree = BUILT_PRODUCTS_DIR; };
 		64CD0EF12B6FC6270055DCA1 /* CoopFoodScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoopFoodScraper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -47,6 +48,7 @@
 		64CD0EE52B6FC6270055DCA1 = {
 			isa = PBXGroup;
 			children = (
+				648C91682B8E31F4003EF4FE /* .gitignore */,
 				64CD0EF02B6FC6270055DCA1 /* CoopFoodScraper */,
 				64CD0EEF2B6FC6270055DCA1 /* Products */,
 			);
@@ -260,6 +262,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
 			};

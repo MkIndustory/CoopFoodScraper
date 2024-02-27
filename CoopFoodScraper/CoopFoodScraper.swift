@@ -170,15 +170,17 @@ struct CoopFoodScraper {
             print("☔️",String(data: jsonData , encoding: .utf8)!)
             
             //このあとファイルに書き出す処理を書く。
-            guard let dirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-                fatalError("フォルダURL取得エラー")
-            }
+            let dirURL = FileManager.default.currentDirectoryPath
+            
+            print("🌷",dirURL)
+            print("💐",FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first)
+            print("💦",FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
             //URLの最後の文字列を取得して一意なjsonを作る
             let lastCharacter = url.last!
             print("😤",lastCharacter)
-            let fileURL = dirURL.appendingPathComponent("CoopFoodScraper/ChuoFoodData\(lastCharacter).json")
+            guard let fileURL = URL(string:"file://" + dirURL + "/ChuoFoodData\(lastCharacter).json") else {
+                fatalError("fileURLエラー") }
             print(fileURL)
-            
             do {
                 try jsonData.write(to: fileURL)
             } catch {
