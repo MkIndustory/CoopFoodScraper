@@ -11,8 +11,13 @@ import SwiftSoup
 
 @main
 struct CoopFoodScraper {
-    // システムメンテナンス中は以下から取れる。
-    // https://west2-univ.jp/sp/index.php?t=650111
+    // TODO: システムメンテナンス中かどうか判断するのは今のとこは中央食堂のみだけど、食堂ごとにみるようにしたい。
+    // TODO: 食堂によって、ライス大とかが分けられてる食堂と詳細画面に行かないと分けられていない食堂があるので精査
+    // TODO: なんか食堂によっては大じゃなくてLになってるのがあるかも、精査
+    // 全部の食堂へのページ：https://west2-univ.jp/sp/kyoto-univ.php
+    static let homeUrlString = "https://west2-univ.jp/sp/index.php?t=650111"
+    // 中央食堂のトップページ。システムメンテナンス中かどうかのみを判定する。
+    
     /*
      京都大学中央食堂の場合
      　主菜：on_a
@@ -21,16 +26,94 @@ struct CoopFoodScraper {
      　丼・カレー：on_d
      　デザート：on_e
      　夜限定メニュー：on_bunrui2
+     トップページ：https://west2-univ.jp/sp/index.php?t=650111
      */
-    static let homeUrlString = "https://west2-univ.jp/sp/index.php?t=650111"
-    static var urlsArray = [
-        "https://west2-univ.jp/sp/menu_load.php?t=650111&a=on_a",
-        "https://west2-univ.jp/sp/menu_load.php?t=650111&a=on_b",
-        "https://west2-univ.jp/sp/menu_load.php?t=650111&a=on_c",
-        "https://west2-univ.jp/sp/menu_load.php?t=650111&a=on_d",
-        "https://west2-univ.jp/sp/menu_load.php?t=650111&a=on_e",
-        "https://west2-univ.jp/sp/menu_load.php?t=650111&a=on_bunrui2"
-    ]
+    
+    /*
+     京都大学吉田食堂の場合
+     　主菜：on_a
+     　副菜：on_b
+     　丼・カレー：on_d
+     　デザート：on_e
+    トップページ：https://west2-univ.jp/sp/index.php?t=650112
+     */
+    
+    /*
+     ルネの場合
+     　主菜：on_a
+     　副菜：on_b
+     　丼・カレー：on_d
+     　デザート：on_e
+     　オーダー：on_bunrui1
+     　ケバブ＆ベジタリアン：on_bunrui2
+     　パフェ：on_bunrui3
+     トップページ：https://west2-univ.jp/sp/index.php?t=650118
+     */
+    
+    /*
+     宇治の場合
+     　主菜：on_a
+     　副菜：on_b
+     　丼・カレー：on_d
+     　デザート：on_e
+     　昼の日替わり主菜：on_bunrui1
+     　夜の日替わり主菜：on_bunrui2
+　　　　夜の丼ぶり：on_bunrui3
+     トップページ：https://west2-univ.jp/sp/index.php?t=650116
+     */
+    
+    /*
+     京都大学桂セレネの場合
+     　主菜：on_a
+     　副菜：on_b
+     　麺類：on_c
+     　丼・カレー：on_d
+     　デザート：on_e
+     　昼の日替わり主菜：on_bunrui1
+     　夜の日替わり主菜：on_bunrui2
+     トップページ：https://west2-univ.jp/sp/index.php?t=650120
+     */
+    
+    
+    /*
+     北部の場合
+     　主菜：on_a
+     　副菜：on_b
+     　丼・カレー：on_d
+     　デザート：on_e
+     　昼オーダーコーナー：on_bunrui1
+     　夜丼・オーダーコーナー：on_bunrui2
+     トップページ：https://west2-univ.jp/sp/index.php?t=650113
+     */
+    
+    /*
+     南部の場合
+     　主菜：on_a
+     　副菜：on_b
+     トップページ：https://west2-univ.jp/sp/index.php?t=650115
+     */
+
+    static let cafeDict = ["Chuo":"650111",
+                           "Yoshida":"650112",
+                           "Hokubu":"650113",
+                           "Nambu":"650115",
+                           "Uji":"650116",
+                           "Rune":"650118",
+                           "Katsura":"650120"]
+    
+    
+    static func main() async throws {
+        let isMaintenanceMode = try await getHomeState() ?? true
+        // システムメンテナンス中やなにかがおかしい場合、 isMaintenanceMode == true
+        // その場合は新しいjsonを作らない。
+        guard !isMaintenanceMode else {return}
+        let keys = Array(cafeDict.keys) // ["Chuo" ,"Yoshida", ...]
+        for key in keys {
+            try await getData(cafeName:key)
+        }
+    }
+    
+    
 
     static func getHomeState() async throws -> Bool? {
         let response = await AF.request(homeUrlString, 
@@ -48,20 +131,31 @@ struct CoopFoodScraper {
         print("📃",text) //システムメンテナンス中の場合、"現在、システムメンテナンス中です #1" となるはず
         return text.contains("システムメンテナンス中")
     }
+    
+    static func getData(cafeName:String) async throws{
+        guard let num = cafeDict[cafeName]  else {return}//650111とか
+        let urlArray = [
+            "https://west2-univ.jp/sp/menu_load.php?t=" + num + "&a=on_a",
+            "https://west2-univ.jp/sp/menu_load.php?t=" + num + "&a=on_b",
+            "https://west2-univ.jp/sp/menu_load.php?t=" + num + "&a=on_c",
+            "https://west2-univ.jp/sp/menu_load.php?t=" + num + "&a=on_d",
+            "https://west2-univ.jp/sp/menu_load.php?t=" + num + "&a=on_e",
+            "https://west2-univ.jp/sp/menu_load.php?t=" + num + "&a=on_bunrui1",
+            "https://west2-univ.jp/sp/menu_load.php?t=" + num + "&a=on_bunrui2",
+            "https://west2-univ.jp/sp/menu_load.php?t=" + num + "&a=on_bunrui3"
+        ]
         
-    static func main() async throws {
-        let isMaintenanceMode = try await getHomeState() ?? true
-        // システムメンテナンス中やなにかがおかしい場合、 isMaintenanceMode == true
-        // その場合は新しいjsonを作らない。
-        guard !isMaintenanceMode else {return}
-        for url in urlsArray {
+        for url in urlArray {
             
             var foodNameArray : [String] = []
             var priceArray : [String] = []
             var foodsArray : [Food] = []
             
             let response = await AF.request(url, method: .get, headers: nil).serializingString().response
-            guard let html = response.value, let doc = try? SwiftSoup.parse(html) else {return }
+            guard let html = response.value, let doc = try? SwiftSoup.parse(html) else {
+                print(url,"は読み込まれず。😛ここでおしまい。。。")
+                // ここreturn じゃないのは次のfor文にまわってほしいから。
+                continue }
                     
             //画像を取得
             let srcs: Elements = try doc.select("img[src]")
@@ -173,12 +267,10 @@ struct CoopFoodScraper {
             let dirURL = FileManager.default.currentDirectoryPath
             
             print("🌷",dirURL)
-            print("💐",FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first)
-            print("💦",FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
             //URLの最後の文字列を取得して一意なjsonを作る
             let lastCharacter = url.last!
             print("😤",lastCharacter)
-            guard let fileURL = URL(string:"file://" + dirURL + "/Chuo" + "/ChuoFoodData\(lastCharacter).json") else {
+            guard let fileURL = URL(string:"file://" + dirURL + "/" +  cafeName +  "/FoodData\(lastCharacter).json") else {
                 fatalError("fileURLエラー") }
             print(fileURL)
             do {
@@ -187,7 +279,12 @@ struct CoopFoodScraper {
                 fatalError("JSON書き込みエラー")
             }
         }
+        
+        
+        
     }
+        
+
 }
 
 
