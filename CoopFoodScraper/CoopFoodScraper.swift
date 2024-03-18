@@ -178,7 +178,7 @@ struct CoopFoodScraper {
             //URLの最後の文字列を取得して一意なjsonを作る
             let lastCharacter = url.last!
             print("😤",lastCharacter)
-            guard let fileURL = URL(string:"file://" + dirURL + "/ChuoFoodData\(lastCharacter).json") else {
+            guard let fileURL = URL(string:"file://" + dirURL + "/Chuo" + "/ChuoFoodData\(lastCharacter).json") else {
                 fatalError("fileURLエラー") }
             print(fileURL)
             do {
