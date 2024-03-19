@@ -81,8 +81,8 @@ struct CoopFoodScraper {
      　副菜：on_b
      　丼・カレー：on_d
      　デザート：on_e
-     　昼オーダーコーナー：on_bunrui1
-     　夜丼・オーダーコーナー：on_bunrui2
+     　昼　オーダーコーナー：on_bunrui1
+     　夜　丼・オーダーコーナー：on_bunrui2
      トップページ：https://west2-univ.jp/sp/index.php?t=650113
      */
     
@@ -92,6 +92,11 @@ struct CoopFoodScraper {
      　副菜：on_b
      トップページ：https://west2-univ.jp/sp/index.php?t=650115
      */
+    
+    // すなわちバリエーションは。
+    //on_bunrui1 "昼　オーダーコーナー"(北部) "昼の日替わり主菜"(桂と宇治) "オーダー"(ルネ)
+    //on_bunrui2 "夜　丼・オーダーコーナー"(北部) "夜の日替わり主菜"(桂と宇治) "ケバブ＆ベジタリアン"(ルネ) "夜限定メニュー"(中央)
+    //on_bunrui3 "夜の丼ぶり" (宇治) "パフェ"(ルネ)
 
     static let cafeDict = ["Chuo":"650111",
                            "Yoshida":"650112",
@@ -160,6 +165,8 @@ struct CoopFoodScraper {
             //画像を取得
             let srcs: Elements = try doc.select("img[src]")
             var srcsStringArray: [String] = srcs.array().map { try! $0.attr("src").description }
+            //以下でvegan のマーク画像などをarrayから消去する。
+            srcsStringArray.removeAll(where: {$0.contains("bigicon")})
             //d(丼とカレーとご飯)の時だけ詳細画面のURLからご飯画像を取得するのでリセット。
             if url.hasSuffix("d") {
                 srcsStringArray = []
