@@ -206,8 +206,13 @@ struct CoopFoodScraper {
                     let spanText = try? h1?.select("span").array().first?.text()
                     print("🤩", spanText)
                     // 英語の説明を消している
-                    let japanese = japaneseAndEnglish?.replacingOccurrences(of:spanText!, with:"")
+                    var japanese = japaneseAndEnglish?.replacingOccurrences(of:spanText!, with:"")
                     print("🤩",japanese)
+                    // 「〇〇丼中」とかいう名前の「中」を消去
+                    if japanese?.last == "中" {
+                        let japaneseString = japanese?.dropLast() ?? ""
+                        japanese = String(japaneseString)
+                    }
                     // ここまでで日本語名ができた。料金バラエティの数だけfoodNameArrayにそのご飯の名前を入れる。
                     for j in 0..<priceAndSizeArray.count {
                         foodNameArray.append(japanese ?? "")
