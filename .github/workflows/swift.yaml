@@ -21,7 +21,10 @@ jobs:
       run: ARCHS="arm64" ONLY_ACTIVE_ARCH=NO xcodebuild -project CoopFoodScraper.xcodeproj -scheme CoopFoodScraper -sdk macosx14.0 -configuration Debug -derivedDataPath build
     - name: run scraper
       run: ./build/Build/Products/Debug/CoopFoodScraper
-    # - name: Build
-    #   run: swift build -v
-    # - name: Run tests
-    #   run: swift test -v
+    - name: setup git
+      run: |
+        git config --global user.name  "Release Bot"
+        git config --global user.email "action@github.com"
+        git add .
+        git commit -m "Automatically generated"
+        git push
