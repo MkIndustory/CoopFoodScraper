@@ -260,10 +260,25 @@ struct CoopFoodScraper {
             print("☀️",foodNameArray.count, priceArray.count, srcsStringArray.count)
             // ここからjsonを作る。
             for i in 0 ..< foodNameArray.count {
+                
                 //JSON 化したいデータを 構造体 で作成
                 let food = Food(name: foodNameArray[i],
                                 price: priceArray[i],
                                 img: srcsStringArray[i])
+                
+                // ここでルネの対策を入れる。suffixに「ミニ」「小」「大」「S」「L」がつくものはデータ自体から消去
+                // (ご飯のサイズ情報がルネのみ詳細画面に行かずとも含まれるため。)
+                // ただしケバブプレートLも消去される。
+                if (foodNameArray[i].hasSuffix("ミニ") ||
+                    foodNameArray[i].hasSuffix("小") ||
+                    foodNameArray[i].hasSuffix("大") ||
+                    foodNameArray[i].hasSuffix("Ｓ") ||
+                    foodNameArray[i].hasSuffix("Ｌ")
+                ) {
+                    print("データを登録しません🙅‍♀️")
+                    continue
+                }
+                print("このデータは登録する⭕️")
                 foodsArray.append(food)
             }
             
@@ -273,7 +288,7 @@ struct CoopFoodScraper {
             // エンコード
             let jsonData = try encoder.encode(foodsArray)
             // 文字コードUTF8のData型に変換
-            print("☔️",String(data: jsonData , encoding: .utf8)!)
+            print("☔️jsonDataは",String(data: jsonData , encoding: .utf8)!)
             
             //このあとファイルに書き出す処理を書く。
             let dirURL = FileManager.default.currentDirectoryPath
