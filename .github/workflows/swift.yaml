@@ -10,9 +10,9 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
   schedule:
-    - cron: '30 22 * * *' #7時半
     - cron: '15 23 * * *' #8時15分
     - cron: '0 0 * * *' #9時
+    - cron: '50 0 * * *' #9時50分
 
 jobs:
   build:
