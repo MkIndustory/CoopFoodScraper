@@ -12,8 +12,6 @@ import SwiftSoup
 @main
 struct CoopFoodScraper {
     // TODO: システムメンテナンス中かどうか判断するのは今のとこは中央食堂のみだけど、食堂ごとにみるようにしたい。
-    // TODO: 食堂によって、ライス大とかが分けられてる食堂と詳細画面に行かないと分けられていない食堂があるので精査
-    // TODO: なんか食堂によっては大じゃなくてLになってるのがあるかも、精査
     // 全部の食堂へのページ：https://west2-univ.jp/sp/kyoto-univ.php
     static let homeUrlString = "https://west2-univ.jp/sp/index.php?t=650111"
     // 中央食堂のトップページ。システムメンテナンス中かどうかのみを判定する。
@@ -124,15 +122,22 @@ struct CoopFoodScraper {
             cafesArray += menusArray
         }
         
-        
-        
-        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .long
+        dateFormatter.timeStyle = .short
+
+        // 日本の日付表示
+        dateFormatter.locale = Locale(identifier: "ja_JP")
+        let japaneseDate = dateFormatter.string(from: Date())
+        //JSON 化したいデータを 構造体 で作成
+        let cafe = Univ(time: japaneseDate,
+                        cafes: cafesArray)
         
                 let encoder = JSONEncoder()
                 // フォーマットを指定
                 encoder.outputFormatting = .prettyPrinted
                 // エンコード
-                let jsonData = try encoder.encode(cafesArray)
+                let jsonData = try encoder.encode(cafe)
                 // 文字コードUTF8のData型に変換
                 print("☔️jsonDataは",String(data: jsonData , encoding: .utf8)!)
         
