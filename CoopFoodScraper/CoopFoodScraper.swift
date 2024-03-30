@@ -35,7 +35,7 @@ struct CoopFoodScraper {
      　副菜：on_b
      　丼・カレー：on_d
      　デザート：on_e
-    トップページ：https://west2-univ.jp/sp/index.php?t=650112
+     トップページ：https://west2-univ.jp/sp/index.php?t=650112
      */
     
     /*
@@ -58,7 +58,7 @@ struct CoopFoodScraper {
      　デザート：on_e
      　昼の日替わり主菜：on_bunrui1
      　夜の日替わり主菜：on_bunrui2
-　　　　夜の丼ぶり：on_bunrui3
+     　　　　夜の丼ぶり：on_bunrui3
      トップページ：https://west2-univ.jp/sp/index.php?t=650116
      */
     
@@ -97,7 +97,7 @@ struct CoopFoodScraper {
     //on_bunrui1 "昼　オーダーコーナー"(北部) "昼の日替わり主菜"(桂と宇治) "オーダー"(ルネ)
     //on_bunrui2 "夜　丼・オーダーコーナー"(北部) "夜の日替わり主菜"(桂と宇治) "ケバブ＆ベジタリアン"(ルネ) "夜限定メニュー"(中央)
     //on_bunrui3 "夜の丼ぶり" (宇治) "パフェ"(ルネ)
-
+    
     static let cafeDict = ["Chuo":"650111",
                            "Yoshida":"650112",
                            "Hokubu":"650113",
@@ -113,15 +113,52 @@ struct CoopFoodScraper {
         // その場合は新しいjsonを作らない。
         guard !isMaintenanceMode else {return}
         let keys = Array(cafeDict.keys) // ["Chuo" ,"Yoshida", ...]
+        
+        
+        var cafesArray : [Menu] = []
+        // Cafeは [Menu]だわ。
+        
+        
         for key in keys {
-            try await getData(cafeName:key)
+            let menusArray : [Menu] = try await getCafeData(cafeName:key)
+            cafesArray += menusArray
         }
+        
+        
+        
+        
+        
+                let encoder = JSONEncoder()
+                // フォーマットを指定
+                encoder.outputFormatting = .prettyPrinted
+                // エンコード
+                let jsonData = try encoder.encode(cafesArray)
+                // 文字コードUTF8のData型に変換
+                print("☔️jsonDataは",String(data: jsonData , encoding: .utf8)!)
+        
+                //このあとファイルに書き出す処理を書く。
+                let dirURL = FileManager.default.currentDirectoryPath
+        
+                print("🌷",dirURL)
+        
+                guard let fileURL = URL(string:"file://" + dirURL + "/Kyoto/FoodData.json") else {
+                    fatalError("fileURLエラー") }
+                print(fileURL)
+                do {
+                    try jsonData.write(to: fileURL)
+                } catch {
+                    fatalError("JSON書き込みエラー")
+                }
+        
+        
+        
+        
     }
     
     
-
+    
     static func getHomeState() async throws -> Bool? {
-        let response = await AF.request(homeUrlString, 
+        let response = await AF.request(homeUrlString,
                                         method: .get,
                                         headers: nil).serializingString().response
         guard let html = response.value, let doc = try? SwiftSoup.parse(html) else {
@@ -137,8 +174,8 @@ struct CoopFoodScraper {
         return text.contains("システムメンテナンス中")
     }
     
-    static func getData(cafeName:String) async throws{
-        guard let num = cafeDict[cafeName]  else {return}//650111とか
+    static func getCafeData(cafeName:String) async throws -> [Menu]{
+        guard let num = cafeDict[cafeName]  else {return []}//650111とか
         let urlArray = [
             "https://west2-univ.jp/sp/menu_load.php?t=" + num + "&a=on_a",
             "https://west2-univ.jp/sp/menu_load.php?t=" + num + "&a=on_b",
@@ -150,18 +187,21 @@ struct CoopFoodScraper {
             "https://west2-univ.jp/sp/menu_load.php?t=" + num + "&a=on_bunrui3"
         ]
         
+        var menusArray : [Menu] = []
+        
         for url in urlArray {
             
             var foodNameArray : [String] = []
             var priceArray : [String] = []
             var foodsArray : [Food] = []
             
+            
             let response = await AF.request(url, method: .get, headers: nil).serializingString().response
             guard let html = response.value, let doc = try? SwiftSoup.parse(html) else {
                 print(url,"は読み込まれず。😛ここでおしまい。。。")
                 // ここreturn じゃないのは次のfor文にまわってほしいから。
                 continue }
-                    
+            
             //画像を取得
             let srcs: Elements = try doc.select("img[src]")
             var srcsStringArray: [String] = srcs.array().map { try! $0.attr("src").description }
@@ -185,7 +225,7 @@ struct CoopFoodScraper {
                     let response = await AF.request(detailURL,
                                                     method: .get,
                                                     headers: nil).serializingString().response
-                    guard let html = response.value, let doc = try? SwiftSoup.parse(html) else {return }
+                    guard let html = response.value, let doc = try? SwiftSoup.parse(html) else {return [] }
                     let span = try? doc.select("li").first()?.select("span").array()
                     let priceString = try span?[1].text() // Optional("中115円 ﾐﾆ73円 小94円 大136円")
                     let priceAndSizeArray:[String] = priceString?.components(separatedBy: " ") ?? []
@@ -231,9 +271,9 @@ struct CoopFoodScraper {
                 
                 //aタグの中でh3タグを取得
                 let h3 = try? linkArray[i].select("h3").array()
- 
+                
                 for string in h3 ?? [] {
-                    guard let text = try? string.text() else {return }
+                    guard let text = try? string.text() else {return []}
                     print("❤️",text) //きつねそばHot buckwheat noodles with fried bean curd in Japanese soup¥319
                     
                     //h3タグの中でspanタグを取得
@@ -258,13 +298,17 @@ struct CoopFoodScraper {
             }
             
             print("☀️",foodNameArray.count, priceArray.count, srcsStringArray.count)
+            //URLの最後の文字列を取得してattrとする(属性)
+            let lastCharacter = url.last!
+            print("😤",lastCharacter)
             // ここからjsonを作る。
             for i in 0 ..< foodNameArray.count {
                 
                 //JSON 化したいデータを 構造体 で作成
                 let food = Food(name: foodNameArray[i],
                                 price: priceArray[i],
-                                img: srcsStringArray[i])
+                                img: srcsStringArray[i],
+                                attr:"\(lastCharacter)")
                 
                 // ここでルネの対策を入れる。suffixに「ミニ」「小」「大」「S」「L」がつくものはデータ自体から消去
                 // (ご飯のサイズ情報がルネのみ詳細画面に行かずとも含まれるため。)
@@ -282,36 +326,22 @@ struct CoopFoodScraper {
                 foodsArray.append(food)
             }
             
-            let encoder = JSONEncoder()
-            // フォーマットを指定
-            encoder.outputFormatting = .prettyPrinted
-            // エンコード
-            let jsonData = try encoder.encode(foodsArray)
-            // 文字コードUTF8のData型に変換
-            print("☔️jsonDataは",String(data: jsonData , encoding: .utf8)!)
             
-            //このあとファイルに書き出す処理を書く。
-            let dirURL = FileManager.default.currentDirectoryPath
             
-            print("🌷",dirURL)
-            //URLの最後の文字列を取得して一意なjsonを作る
-            let lastCharacter = url.last!
-            print("😤",lastCharacter)
-            guard let fileURL = URL(string:"file://" + dirURL + "/" +  cafeName +  "/FoodData\(lastCharacter).json") else {
-                fatalError("fileURLエラー") }
-            print(fileURL)
-            do {
-                try jsonData.write(to: fileURL)
-            } catch {
-                fatalError("JSON書き込みエラー")
-            }
+            
+            //JSON 化したいデータを 構造体 で作成
+            let menu = Menu(name: cafeName ,
+                            foods: foodsArray)
+            
+            menusArray.append(menu)
         }
         
+        return menusArray
         
         
     }
-        
-
+    
+    
 }
 
 
