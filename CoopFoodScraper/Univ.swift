@@ -1,5 +1,5 @@
 //
-//  Cafe.swift
+//  Univ.swift
 //  CoopFoodScraper
 //
 //  Created by ぴっきー！ on 2024/03/31.

@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		646962C72B83108A00AA39B1 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 646962C62B83108A00AA39B1 /* Food.swift */; };
 		64918FA22BB82E33002455BC /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64918FA12BB82E33002455BC /* Menu.swift */; };
-		64918FA82BB865A3002455BC /* Cafe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64918FA72BB865A3002455BC /* Cafe.swift */; };
+		64918FA82BB865A3002455BC /* Univ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64918FA72BB865A3002455BC /* Univ.swift */; };
 		64CD0EF22B6FC6270055DCA1 /* CoopFoodScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64CD0EF12B6FC6270055DCA1 /* CoopFoodScraper.swift */; };
 		64CD0EFA2B6FC6530055DCA1 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 64CD0EF92B6FC6530055DCA1 /* Alamofire */; };
 		64CD0EFD2B6FC65B0055DCA1 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 64CD0EFC2B6FC65B0055DCA1 /* SwiftSoup */; };
@@ -31,7 +31,7 @@
 		646962C62B83108A00AA39B1 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		648C91682B8E31F4003EF4FE /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		64918FA12BB82E33002455BC /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
-		64918FA72BB865A3002455BC /* Cafe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cafe.swift; sourceTree = "<group>"; };
+		64918FA72BB865A3002455BC /* Univ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Univ.swift; sourceTree = "<group>"; };
 		64CD0EEE2B6FC6270055DCA1 /* CoopFoodScraper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CoopFoodScraper; sourceTree = BUILT_PRODUCTS_DIR; };
 		64CD0EF12B6FC6270055DCA1 /* CoopFoodScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoopFoodScraper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -72,7 +72,7 @@
 				64CD0EF12B6FC6270055DCA1 /* CoopFoodScraper.swift */,
 				646962C62B83108A00AA39B1 /* Food.swift */,
 				64918FA12BB82E33002455BC /* Menu.swift */,
-				64918FA72BB865A3002455BC /* Cafe.swift */,
+				64918FA72BB865A3002455BC /* Univ.swift */,
 			);
 			path = CoopFoodScraper;
 			sourceTree = "<group>";
@@ -143,7 +143,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				64918FA82BB865A3002455BC /* Cafe.swift in Sources */,
+				64918FA82BB865A3002455BC /* Univ.swift in Sources */,
 				64CD0EF22B6FC6270055DCA1 /* CoopFoodScraper.swift in Sources */,
 				646962C72B83108A00AA39B1 /* Food.swift in Sources */,
 				64918FA22BB82E33002455BC /* Menu.swift in Sources */,

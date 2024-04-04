@@ -130,14 +130,14 @@ struct CoopFoodScraper {
         dateFormatter.locale = Locale(identifier: "ja_JP")
         let japaneseDate = dateFormatter.string(from: Date())
         //JSON 化したいデータを 構造体 で作成
-        let cafe = Univ(time: japaneseDate,
+        let univ = Univ(time: japaneseDate,
                         cafes: cafesArray)
         
                 let encoder = JSONEncoder()
                 // フォーマットを指定
                 encoder.outputFormatting = .prettyPrinted
                 // エンコード
-                let jsonData = try encoder.encode(cafe)
+                let jsonData = try encoder.encode(univ)
                 // 文字コードUTF8のData型に変換
                 print("☔️jsonDataは",String(data: jsonData , encoding: .utf8)!)
         
