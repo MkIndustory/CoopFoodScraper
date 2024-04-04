@@ -128,7 +128,9 @@ struct CoopFoodScraper {
 //        dateFormatter.locale = Locale(identifier: "ja_JP")
 //        let japaneseDate = dateFormatter.string(from: Date())
         
-        var nowTime = Date()
+        // 加算する時間（秒）
+        let addSec: Double = 60 * 60 * 9 // 9時間　加算
+        let nowTime = Date(timeIntervalSinceNow: addSec)
         dateFormatter.dateFormat = "YYYY/MM/dd HH:mm"
         dateFormatter.locale = Locale(identifier: "ja_jp")
         var now = dateFormatter.string(from: nowTime)
