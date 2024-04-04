@@ -114,8 +114,6 @@ struct CoopFoodScraper {
         
         
         var cafesArray : [Menu] = []
-        // Cafeは [Menu]だわ。
-        
         
         for key in keys {
             let menusArray : [Menu] = try await getCafeData(cafeName:key)
@@ -123,14 +121,20 @@ struct CoopFoodScraper {
         }
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .long
-        dateFormatter.timeStyle = .short
-
-        // 日本の日付表示
-        dateFormatter.locale = Locale(identifier: "ja_JP")
-        let japaneseDate = dateFormatter.string(from: Date())
+//        dateFormatter.dateStyle = .long
+//        dateFormatter.timeStyle = .short
+//
+//        // 日本の日付表示
+//        dateFormatter.locale = Locale(identifier: "ja_JP")
+//        let japaneseDate = dateFormatter.string(from: Date())
+        
+        var nowTime = Date()
+        dateFormatter.dateFormat = "YYYY/MM/dd HH:mm"
+        dateFormatter.locale = Locale(identifier: "ja_jp")
+        var now = dateFormatter.string(from: nowTime)
+        
         //JSON 化したいデータを 構造体 で作成
-        let univ = Univ(time: japaneseDate,
+        let univ = Univ(time: now,//japaneseDate,
                         cafes: cafesArray)
         
                 let encoder = JSONEncoder()
