@@ -106,6 +106,7 @@ struct CoopFoodScraper {
                            "Ortus":"650711",
                            "Bistro":"650911",
                            "Kyoyu":"650913",
+                           "Kinki":"661161",
     ]
     
     
