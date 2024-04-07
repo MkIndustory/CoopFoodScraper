@@ -103,7 +103,10 @@ struct CoopFoodScraper {
                            "Uji":"650116",
                            "Rune":"650118",
                            "Katsura":"650120",
-                           "Ortus":"650711"]
+                           "Ortus":"650711",
+                           "Bistro":"650911",
+                           "Kyoyu":"650913",
+    ]
     
     
     static func main() async throws {
@@ -134,7 +137,7 @@ struct CoopFoodScraper {
         let nowTime = Date(timeIntervalSinceNow: addSec)
         dateFormatter.dateFormat = "YYYY/MM/dd HH:mm"
         dateFormatter.locale = Locale(identifier: "ja_jp")
-        var now = dateFormatter.string(from: nowTime)
+        let now = dateFormatter.string(from: nowTime)
         
         //JSON 化したいデータを 構造体 で作成
         let univ = Univ(time: now,//japaneseDate,
@@ -196,7 +199,9 @@ struct CoopFoodScraper {
             "https://west2-univ.jp/sp/menu_load.php?t=" + num + "&a=on_e",
             "https://west2-univ.jp/sp/menu_load.php?t=" + num + "&a=on_bunrui1",
             "https://west2-univ.jp/sp/menu_load.php?t=" + num + "&a=on_bunrui2",
-            "https://west2-univ.jp/sp/menu_load.php?t=" + num + "&a=on_bunrui3"
+            "https://west2-univ.jp/sp/menu_load.php?t=" + num + "&a=on_bunrui3",
+            "https://west2-univ.jp/sp/menu_load.php?t=" + num + "&a=on_f",
+            "https://west2-univ.jp/sp/menu_load.php?t=" + num + "&a=on_g"
         ]
         
         var menusArray : [Menu] = []
