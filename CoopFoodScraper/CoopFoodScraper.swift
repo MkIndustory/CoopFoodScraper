@@ -102,7 +102,8 @@ struct CoopFoodScraper {
                            "Nambu":"650115",
                            "Uji":"650116",
                            "Rune":"650118",
-                           "Katsura":"650120"]
+                           "Katsura":"650120",
+                           "Ortus":"650711"]
     
     
     static func main() async throws {
