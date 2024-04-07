@@ -251,10 +251,14 @@ struct CoopFoodScraper {
                     
                     for j in 0..<priceAndSizeArray.count {
                         //"円"の文字を消す
-                        let price = priceAndSizeArray[j].replacingOccurrences(of:"円", with:"")
+                        var price = priceAndSizeArray[j].replacingOccurrences(of:"円", with:"")
+                        // priceの先頭が数字から始まっていたら、"中"の文字をつける
+                        if isOnlyNumber(price) {
+                            // 数字のみ
+                            price = "中" + price
+                        }
                         priceArray.append(price)
                     }
-                    print(priceArray)
                     
                     // ここまででd用のpriceArrayができた。次はfoodNameArray
                     let h1 = try? doc.select("h1").array()[1]
@@ -358,6 +362,13 @@ struct CoopFoodScraper {
         
         
     }
+    
+    // 数字のみかを調べる。
+    static func isOnlyNumber(_ str:String) -> Bool {
+        let predicate = NSPredicate(format: "SELF MATCHES '\\\\d+'")
+       return predicate.evaluate(with: str)
+    }
+
     
     
 }
