@@ -306,12 +306,17 @@ struct CoopFoodScraper {
                             // 英語の説明を消している
                             let japaneseAndYen = text.replacingOccurrences(of:spanText, with:"")
                             let arr:[String] = japaneseAndYen.components(separatedBy: "¥")
-                            print("😔",arr[0],arr[1]) //きつねそば,¥319
+//                            print("😔",arr[0],arr[1]) //きつねそば,319
                             
+                            let name = arr[0]
+                            var price = "0"
+                            if arr.count == 2 {
+                                price = arr[1]
+                            }
                             //dの時は既にfoodNAmeArrayとpriceArrayは出来上がっているので、d以外の時だけ実行
                             if !url.hasSuffix("d") {
-                                foodNameArray.append(arr[0])
-                                priceArray.append(arr[1])
+                                foodNameArray.append(name)
+                                priceArray.append(price)
                             }
                             break // "きつねそば¥319" というtextだけ欲しいのでfor文全部回さない
                         }
