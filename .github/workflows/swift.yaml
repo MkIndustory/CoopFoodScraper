@@ -10,16 +10,23 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
   schedule:
-    - cron: '30 22 * * *'
-    - cron: '0 0 * * *'
+    - cron: '15 23 * * *' #8時15分
+    - cron: '0 0 * * *' #9時
+    - cron: '50 0 * * *' #9時50分
 
 jobs:
   build:
+    strategy:
+      matrix:
+        branch: ["main", "develop"]
+        
 
     runs-on: macos-14
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ matrix.branch }}
     - name: build
       run: ARCHS="arm64" ONLY_ACTIVE_ARCH=NO xcodebuild -project CoopFoodScraper.xcodeproj -scheme CoopFoodScraper -sdk macosx14.0 -configuration Debug -derivedDataPath build
     - name: run scraper
@@ -30,4 +37,4 @@ jobs:
         git config --global user.email "action@github.com"
         git add .
         git commit -m "Automatically generated"
-        git push
+        git push origin ${{ matrix.branch }}
