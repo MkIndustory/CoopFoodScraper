@@ -28,7 +28,7 @@ jobs:
       with:
         ref: ${{ matrix.branch }}
     - name: build
-      run: ARCHS="arm64" ONLY_ACTIVE_ARCH=NO xcodebuild -project CoopFoodScraper.xcodeproj -scheme CoopFoodScraper -sdk macosx14.4 -configuration Debug -derivedDataPath build
+      run: ARCHS="arm64" ONLY_ACTIVE_ARCH=NO xcodebuild -project CoopFoodScraper.xcodeproj -scheme CoopFoodScraper -sdk macosx14.0 -configuration Debug -derivedDataPath build
     - name: run scraper
       run: ./build/Build/Products/Debug/CoopFoodScraper
     - name: setup git
