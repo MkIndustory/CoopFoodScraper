@@ -22,7 +22,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: build
-      run: ARCHS="arm64" ONLY_ACTIVE_ARCH=NO xcodebuild -project CoopFoodScraper.xcodeproj -scheme CoopFoodScraper -sdk macosx15.1 -configuration Debug -derivedDataPath build
+      run: ARCHS="arm64" ONLY_ACTIVE_ARCH=NO xcodebuild -project CoopFoodScraper.xcodeproj -scheme CoopFoodScraper -sdk macosx15.0 -configuration Debug -derivedDataPath build
     - name: run scraper
       run: ./build/Build/Products/Debug/CoopFoodScraper
     - name: setup git
